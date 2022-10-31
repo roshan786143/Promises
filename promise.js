@@ -4,16 +4,16 @@ const posts = [
     {title : "post two",body : "My second post",createdAt : time}
 ]
 
+let timer = setInterval(getPost,1000);
+
 function getPost(){
-    setTimeout(()=>{
         let output = "";
         posts.forEach((post)=>{
             output += `<li>${post.title} and this is ${post.body} edited in ${(new Date().getTime()-time)/1000} ago.</li>`
         });
         document.body.innerHTML = output;
         
-    },1000);
-}
+    }
 getPost(posts);
 
 function createPost(post){
@@ -94,6 +94,7 @@ deletePost()
     setTimeout(()=>{
         deletePost()
         .then(()=>{
+            clearInterval(timer)
             console.log(posts)
             console.log(post.length)
         })
