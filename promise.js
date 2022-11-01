@@ -21,6 +21,7 @@ function createPost(post){
         time = new Date().getTime();
         setTimeout(()=>{
             posts.push({...post,createdAt : time});
+            updateLastUserActivityTime().then(()=>console.log("hurray we've got..."))
             console.log(posts);
             console.log(posts.length);
             console.log("--------------------------------------");
@@ -56,7 +57,10 @@ function deletePost(){
 }
 
 createPost({title : "post three",body : "My third post"})
-.then(getPost)
+.then(()=>{
+    getPost();
+    console.log("First post Status updated - "+ new Date().toUTCString());
+})
 .catch(error=>{
     console.log(error)
 });
@@ -105,3 +109,33 @@ deletePost()
         })
         })
     },4000)
+
+//promise.all
+console.log("***************************************");
+const promise1 = Promise.resolve("hello roshan");console.log(typeof promise1);
+const promise2 = 10;
+console.log(typeof promise2);
+const promise3 = new Promise((resolve,reject)=>setTimeout(resolve,2000,"good bye..."));
+console.log(typeof promise3);
+const promise4 = fetch('https://jsonplaceholder.typicode.com/users').then(res=>res.json());
+console.log(typeof promise4);
+Promise.all([promise1,promise2,promise3,promise4]).then(values=>{
+    console.log(values)})
+    .catch(()=>console.log("There's an error"));
+
+// const updateLastUserActivityTime = new Promise((resolve,reject)=>setTimeout(resolve=>{
+//     createPost(),
+//     postFour();
+//     console.log(new Date().toUTCString());
+// }),1000);
+// console.log(updateLastUserActivityTime);
+// Promise.all([])
+
+function updateLastUserActivityTime(){
+    return new Promise((resolve,reject)=>{
+        setTimeout(() => {
+            resolve();
+            // console.log("hurray.....")
+        }, 1000);
+    })
+}
